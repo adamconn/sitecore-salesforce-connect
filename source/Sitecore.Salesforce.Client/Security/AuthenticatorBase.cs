@@ -10,8 +10,9 @@
 
   using Sitecore.Salesforce.Client.Data.Errors;
   using Sitecore.Salesforce.Client.Exceptions;
+  using System.Net;
 
-  public abstract class AuthenticatorBase : ClientBase, IAuthenticator
+    public abstract class AuthenticatorBase : ClientBase, IAuthenticator
   {
     private string tokenRequestUri;
 
@@ -47,6 +48,8 @@
 
     public virtual async Task<IAuthToken> AuthenticateAsync()
     {
+      ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
       HttpContent content = new FormUrlEncodedContent(this.GetAuthParameters());
       
       var request = new HttpRequestMessage
